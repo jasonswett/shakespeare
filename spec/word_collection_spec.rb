@@ -8,6 +8,44 @@ describe WordCollection do
     expect(wc.content).to eq(content)
   end
 
+  describe "#words_for_stem" do
+    describe "when there are no matches" do
+      before do
+        content = "This is the content I'm testing. This is another sentence."
+        wc = WordCollection.new(content)
+        @matches = wc.words_for_stem("asldkf")
+      end
+
+      it "returns nothing" do
+        expect(@matches.length).to eq(0)
+      end
+    end
+
+    describe "when there are matches" do
+      before do
+        content = "This is the content I'm testing. This is another sentence."
+        wc = WordCollection.new(content)
+        @matches = wc.words_for_stem("th")
+      end
+
+      it "includes the right number of matches" do
+        expect(@matches.length).to eq(2)
+      end
+
+      it "excludes non-matches" do
+        expect(@matches).not_to include("another")
+      end
+
+      it "includes lowercase words" do
+        expect(@matches).to include("the")
+      end
+
+      it "includes capitalized words" do
+        expect(@matches).to include("this")
+      end
+    end
+  end
+
   describe "#words_with_frequency" do
     it "puts the content in a hash" do
       content = "hello world"

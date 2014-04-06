@@ -3,13 +3,17 @@ class WordCollection
 
   def initialize(content)
     @content = content
-    @words = words_with_frequency(@content.split(" ").sort)
+    @words = words_with_frequency(@content.downcase.split(" ").sort)
   end
 
   def words_with_frequency(a)
     # Swiped this from Stack Overflow
     # http://stackoverflow.com/a/10411802/199712
     Hash[a.inject(Hash.new(0)) { |h, e| h[e] += 1; h }.to_a.sort { |a, b| a[1] <=> b[1] }]
+  end
+
+  def words_for_stem(stem)
+    @words.select { |word, frequency| word =~ /^#{stem}(.*)/ }.keys
   end
 
   def matches(stem)
