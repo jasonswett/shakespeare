@@ -21,11 +21,39 @@ describe WordCollection do
       end
     end
 
+    describe "when multiple words appear multiple times" do
+      before do
+        content = %Q(
+          ear ear ear
+          egg egg egg egg
+          elk elk
+        )
+        wc = WordCollection.new(content)
+        @matches = wc.words_for_stem("e")
+      end
+
+      it "puts 'egg' first" do
+        expect(@matches.first).to eq("egg")
+      end
+
+      it "puts 'elk' last" do
+        expect(@matches.last).to eq("elk")
+      end
+
+      it "puts 'ear' in the middle" do
+        expect(@matches[1]).to eq("ear")
+      end
+    end
+
     describe "when there are matches" do
       before do
         content = "This is the content I'm testing. This is another sentence."
         wc = WordCollection.new(content)
         @matches = wc.words_for_stem("th")
+      end
+
+      it "puts more common words first" do
+        expect(@matches[0]).to eq("this")
       end
 
       it "includes the right number of matches" do

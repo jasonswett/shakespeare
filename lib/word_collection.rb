@@ -13,7 +13,10 @@ class WordCollection
   end
 
   def words_for_stem(stem)
-    @words.select { |word, frequency| word =~ /^#{stem}(.*)/ }.keys
+    matches = @words.select { |word, frequency| word =~ /^#{stem}(.*)/ }
+
+    # http://stackoverflow.com/a/2540473/199712
+    Hash[matches.sort_by { |k, v| v }.reverse].keys
   end
 
   def matches(stem)
