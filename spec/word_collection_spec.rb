@@ -97,7 +97,7 @@ describe WordCollection do
     end
 
     it "returns an empty array if there are no matches" do
-      expect(@wc.matches("xz").length).to eq(0)
+      expect(@wc.words_for_stem("xz").length).to eq(0)
     end
   end
 end
