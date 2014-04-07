@@ -4,7 +4,7 @@ class WordCollection
 
   def initialize(content)
     @content = content
-    @words = words_with_frequency(@content.downcase.split(" ").sort)
+    @words = words_with_frequency(@content.downcase.tr("^a-zA-Z0-9 ", "").split(" ").sort)
   end
 
   def words_with_frequency(a)
