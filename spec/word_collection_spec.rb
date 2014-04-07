@@ -32,6 +32,21 @@ describe WordCollection do
         expect(@matches).to be_empty
       end
     end
+
+    describe "when there are a lot of matches" do
+      before do
+        # This generates 100 usually unique (not always but close enough)
+        # strings starting with the letter a
+        content = Array.new(100) { "a#{rand(10000)}" }.join(" ")
+
+        wc = WordCollection.new(content)
+        @matches = wc.matches_with_frequency("a")
+      end
+
+      it "limits the number of matches to 25" do
+        expect(@matches.length).to eq(25)
+      end
+    end
   end
 
   describe "#matches" do

@@ -1,4 +1,5 @@
 class WordCollection
+  MAX_NUMBER_OF_MATCHES = 25
   attr_accessor :content, :words
 
   def initialize(content)
@@ -17,7 +18,7 @@ class WordCollection
 
     # Put most frequently-occurring words first.
     # http://stackoverflow.com/a/2540473/199712
-    matches.sort_by { |k, v| v }.reverse.collect { |match| Hash[[match]] }
+    matches.sort_by { |k, v| v }.reverse.collect { |match| Hash[[match]] }[0..MAX_NUMBER_OF_MATCHES - 1]
   end
 
   def matches(stem)
