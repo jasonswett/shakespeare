@@ -12,11 +12,15 @@ class WordCollection
     Hash[a.inject(Hash.new(0)) { |h, e| h[e] += 1; h }.to_a.sort { |a, b| a[1] <=> b[1] }]
   end
 
-  def words_for_stem(stem)
+  def matches_with_frequency(stem)
     matches = @words.select { |word, frequency| word =~ /^#{stem}(.*)/ }
 
     # Put most frequently-occurring words first.
     # http://stackoverflow.com/a/2540473/199712
-    Hash[matches.sort_by { |k, v| v }.reverse].keys
+    matches.sort_by { |k, v| v }.reverse.collect { |match| Hash[[match]] }
+  end
+
+  def matches(stem)
+    matches_with_frequency(stem).collect(&:keys).flatten
   end
 end

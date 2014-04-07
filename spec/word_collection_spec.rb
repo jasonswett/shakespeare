@@ -8,12 +8,38 @@ describe WordCollection do
     expect(wc.content).to eq(content)
   end
 
-  describe "#words_for_stem" do
+  describe "#matches_with_frequency" do
+    describe "when there is a match" do
+      before do
+        content = "apple apple apple apricot apricot"
+        wc = WordCollection.new(content)
+        @matches = wc.matches_with_frequency("a")
+      end
+
+      it "includes frequency" do
+        expect(@matches.first).to eq({ "apple" => 3 })
+      end
+    end
+
+    describe "when there is not a match" do
+      before do
+        content = "some words"
+        wc = WordCollection.new(content)
+        @matches = wc.matches_with_frequency("zzzz")
+      end
+
+      it "includes frequency" do
+        expect(@matches).to be_empty
+      end
+    end
+  end
+
+  describe "#matches" do
     describe "when there are no matches" do
       before do
         content = "This is the content I'm testing. This is another sentence."
         wc = WordCollection.new(content)
-        @matches = wc.words_for_stem("asldkf")
+        @matches = wc.matches("asldkf")
       end
 
       it "returns nothing" do
@@ -29,7 +55,7 @@ describe WordCollection do
           elk elk
         )
         wc = WordCollection.new(content)
-        @matches = wc.words_for_stem("e")
+        @matches = wc.matches("e")
       end
 
       it "puts 'egg' first" do
@@ -49,7 +75,7 @@ describe WordCollection do
       before do
         content = "This is the content I'm testing. This is another sentence."
         wc = WordCollection.new(content)
-        @matches = wc.words_for_stem("th")
+        @matches = wc.matches("th")
       end
 
       it "puts more common words first" do
@@ -97,7 +123,7 @@ describe WordCollection do
     end
 
     it "returns an empty array if there are no matches" do
-      expect(@wc.words_for_stem("xz").length).to eq(0)
+      expect(@wc.matches("xz").length).to eq(0)
     end
   end
 end
